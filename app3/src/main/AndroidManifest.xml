@@ -42,8 +42,8 @@
         <activity android:name=".ui3.LauncherActivity"
             android:theme="@style/Theme.Dark"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan"
-            android:process=":ui"/>
+            android:windowSoftInputMode="adjustPan" />
+           <!-- android:process=":ui" -->
 
         <!-- The God Activity -->
         <activity-alias

@@ -15,11 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.client;
+package org.opensilk.music.library.kutr.client;
 
 import android.net.Uri;
-
-import com.google.api.services.drive.model.File;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,40 +30,50 @@ import java.util.Locale;
 
 import rx.functions.Func1;
 
-import static org.opensilk.music.library.drive.Constants.AUDIO_MIME_WILDCARD;
-import static org.opensilk.music.library.drive.Constants.AUDIO_OGG_MIMETYPE;
-import static org.opensilk.music.library.drive.Constants.FOLDER_MIMETYPE;
-import static org.opensilk.music.library.drive.Constants.IMAGE_MIME_WILDCARD;
+import static org.opensilk.music.library.kutr.Constants.AUDIO_MIME_WILDCARD;
+import static org.opensilk.music.library.kutr.Constants.AUDIO_OGG_MIMETYPE;
+import static org.opensilk.music.library.kutr.Constants.FOLDER_MIMETYPE;
+import static org.opensilk.music.library.kutr.Constants.SONG_MIMETYPE;
+import static org.opensilk.music.library.kutr.Constants.IMAGE_MIME_WILDCARD;
 
 /**
  * Created by drew on 4/28/15.
  */
 public class ModelUtil {
 
-    public static final Func1<File, Boolean> IS_FOLDER = new Func1<File, Boolean>() {
+    public static final Func1<Item, Boolean> IS_FOLDER = new Func1<Item, Boolean>() {
         @Override
-        public Boolean call(File file) {
-            return StringUtils.equals(FOLDER_MIMETYPE, file.getMimeType());
+        public Boolean call(Item item) {
+            return StringUtils.equals(FOLDER_MIMETYPE, item.getMimeType());
         }
     };
 
-    public static final Func1<File, Boolean> IS_AUDIO = new Func1<File, Boolean>() {
+    public static final Func1<Item, Boolean> IS_AUDIO = new Func1<Item, Boolean>() {
         @Override
-        public Boolean call(File file) {
-            return StringUtils.contains(file.getMimeType(), AUDIO_MIME_WILDCARD)
-                    || StringUtils.equals(file.getMimeType(), AUDIO_OGG_MIMETYPE);
+        public Boolean call(Item item) {
+            return StringUtils.contains(item.getMimeType(), AUDIO_MIME_WILDCARD)
+                    || StringUtils.equals(item.getMimeType(), AUDIO_OGG_MIMETYPE);
         }
     };
 
-    public static final Func1<File, Boolean> IS_IMAGE = new Func1<File, Boolean>() {
+    public static final Func1<Item, Boolean> IS_IMAGE = new Func1<Item, Boolean>() {
         @Override
-        public Boolean call(File file) {
-            return StringUtils.contains(file.getMimeType(), IMAGE_MIME_WILDCARD);
+        public Boolean call(Item item) {
+            return StringUtils.contains(item.getMimeType(), IMAGE_MIME_WILDCARD);
         }
     };
 
-    public static File pickSuitableImage(List<File> images) {
-        if (images.size() == 1) {
+    public static final Func1<Item, Boolean> IS_SONG = new Func1<Item, Boolean>() {
+        @Override
+        public Boolean call(Item item) {
+            return StringUtils.equals(SONG_MIMETYPE, item.getMimeType());
+        }
+    };
+
+
+    public static Item pickSuitableImage(List<Item> images) {
+        //TODO
+/*        if (images.size() == 1) {
             if (isAlbumArt(images.get(0).getTitle())) {
                 return images.get(0);
             }
@@ -88,6 +96,7 @@ public class ModelUtil {
                 return matches.get(langestidx);
             }
         }
+*/
         return null;
     }
 

@@ -74,12 +74,12 @@ public class Album extends Container {
             throw new IllegalArgumentException("Wrong class for Album: "+b.getString(CLZ));
         }
         b.setClassLoader(Album.class.getClassLoader());
-        return new Album(
-                b.<Uri>getParcelable("_1"),
-                b.<Uri>getParcelable("_4"),
-                b.getString("_2"),
-                b.<Metadata>getParcelable("_3")
-        );
+        Uri uri = b.<Uri>getParcelable("_1"), parentUri = b.<Uri>getParcelable("_4");
+        String name = b.getString("_2");
+        Metadata meta = b.<Metadata>getParcelable("_3");
+        if (uri == null || parentUri == null || name == null || meta == null)
+            throw new NullPointerException("uri and name are required");
+        return new Album(uri, parentUri, name, meta);
     }
 
     public static Builder builder() {

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.ui;
+package org.opensilk.music.library.kutr.ui;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
-import org.opensilk.music.library.drive.R;
+import org.opensilk.music.library.kutr.R;
 
 /**
  * Created by drew on 4/29/15.
@@ -43,7 +43,7 @@ public class ProgressFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage(getString(R.string.drive_authorizing));
+        mProgressDialog.setMessage(getString(R.string.kutr_authorizing));
         return mProgressDialog;
     }
 }

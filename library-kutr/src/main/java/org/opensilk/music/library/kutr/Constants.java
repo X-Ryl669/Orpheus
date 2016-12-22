@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive;
+package org.opensilk.music.library.kutr;
 
-import com.google.api.services.drive.DriveScopes;
+//import com.google.api.services.drive.DriveScopes;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,18 +27,21 @@ import java.util.Collection;
  */
 public interface Constants {
 
+    /*
     Collection<String> SCOPES = Arrays.asList(
             "https://www.googleapis.com/auth/drive.appfolder",
             DriveScopes.DRIVE_READONLY
     );
+*/
 
-    String DEFAULT_ROOT_FOLDER = "root";
+    String DEFAULT_ROOT_FOLDER = "Media Library";
 
-    String FOLDER_MIMETYPE = "application/vnd.google-apps.folder";
+    String FOLDER_MIMETYPE = "application/vnd.kutr.folder";
+    String SONG_MIMETYPE = "application/vnd.kutr.song";
     String AUDIO_MIME_WILDCARD = "audio";
     String AUDIO_OGG_MIMETYPE = "application/ogg";
     String IMAGE_MIME_WILDCARD = "image";
-
+/*
     String IMAGE_TITLE_QUERY = "title contains 'cover' or title contains 'albumart' " +
             "or title contains 'album' or title contains 'front'";
 
@@ -55,5 +58,6 @@ public interface Constants {
 
     String LIST_FIELDS = "items/id,items/mimeType,items/parents,items/title," +
             "items/downloadUrl,items/modifiedDate,items/fileSize";
+*/
 
 }

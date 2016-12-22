@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.client;
+package org.opensilk.music.library.kutr.client;
 
 import dagger.Subcomponent;
 
 /**
  * Created by drew on 10/20/15.
  */
-@DriveClientScope
+@KutrClientScope
 @Subcomponent(
-        modules = DriveClientModule.class
+        modules = KutrClientModule.class
 )
-public interface DriveClientComponent {
-    DriveClient client();
+public interface KutrClientComponent {
+    KutrClient client();
 }

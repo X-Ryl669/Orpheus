@@ -16,29 +16,32 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.opensilk.music.library.drive">
+    package="org.opensilk.music.library.kutr">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application>
 
-        <activity android:name=".ui.ChooserActivity"
-            android:theme="@style/DriveThemeTranslucentDark"
+        <activity android:name=".ui.SetCredentialsActivity"
+            android:theme="@style/KutrThemeTranslucentDark"
             android:process=":ui"/>
 
         <activity android:name=".ui.SettingsActivity"
-            android:theme="@style/DriveDarkTheme"
+            android:theme="@style/KutrDarkTheme"
             android:process=":ui"/>
 
+        <activity android:name=".ui.LoginActivity"
+            android:theme="@style/KutrDarkTheme"
+            android:process=":ui"/>
+
+
+
         <provider
-            android:name="org.opensilk.music.library.drive.provider.DriveLibraryProvider"
-            android:icon="@drawable/google_drive_grey600_36dp"
-            android:label="@string/drive_name"
-            android:description="@string/drive_description"
+            android:name="org.opensilk.music.library.kutr.provider.KutrLibraryProvider"
+            android:icon="@drawable/kutr_grey600_36dp"
+            android:label="@string/kutr_name"
+            android:description="@string/kutr_description"
             android:authorities="override_me"
             android:process=":prvdr">
             <intent-filter>

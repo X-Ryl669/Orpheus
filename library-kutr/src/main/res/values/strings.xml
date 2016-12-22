@@ -19,19 +19,26 @@
 <resources>
 
     <!-- Plugin info -->
-    <string name="drive_name">Google Drive</string>
-    <string name="drive_description">Google Drive library plugin</string>
+    <string name="kutr_name">Kutr</string>
+    <string name="kutr_description">Kutr library plugin</string>
 
     <!-- Library picker -->
-    <string name="drive_authorizing">Authorizing…</string>
-    <string name="drive_msg_unable_to_authorize">Authorization failed</string>
+    <string name="kutr_credentials">Set credentials…</string>
+    <string name="kutr_authorizing">Authorizing…</string>
+    <string name="kutr_msg_unable_to_authorize">Authorization failed</string>
+    <string name="kutr_host">Host…</string>
+    <string name="kutr_host_default">http://yourserverhere</string>
+    <string name="kutr_account">Account…</string>
+    <string name="kutr_password">Password…</string>
+    <string name="kutr_cache">Set cache…</string>
+
 
     <!-- Settings-->
-    <string name="drive_about_title">About</string>
-    <string name="drive_about_me" translatable="false">OpenSilk Productions LLC</string>
-    <string name="drive_about_me_url" translatable="false">http://opensilk.org</string>
-    <string name="drive_version">Version</string>
-    <string name="drive_legal_title">Legal</string>
-    <string name="drive_open_source_licenses">Open source licenses</string>
+    <string name="kutr_about_title">About</string>
+    <string name="kutr_about_me" translatable="false">X-Ryl669</string>
+    <string name="kutr_about_me_url" translatable="false">http://github.com/X-Ryl669/kutr</string>
+    <string name="kutr_version">Version</string>
+    <string name="kutr_legal_title">Legal</string>
+    <string name="kutr_open_source_licenses">Open source licenses</string>
 
 </resources>

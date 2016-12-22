@@ -19,28 +19,28 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/drive_about_title">
+        android:title="@string/kutr_about_title">
 
         <Preference
             android:key="about_me"
-            android:title="@string/drive_about_me"
-            android:summary="@string/drive_about_me_url">
+            android:title="@string/kutr_about_me"
+            android:summary="@string/kutr_about_me_url">
             <intent android:action="android.intent.action.VIEW"
-                android:data="@string/drive_about_me_url"/>
+                android:data="@string/kutr_about_me_url"/>
         </Preference>
 
         <Preference
             android:key="version"
-            android:title="@string/drive_version" />
+            android:title="@string/kutr_version" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/drive_legal_title">
+        android:title="@string/kutr_legal_title">
 
         <Preference
             android:key="licenses"
-            android:title="@string/drive_open_source_licenses"/>
+            android:title="@string/kutr_open_source_licenses"/>
 
     </PreferenceCategory>
 

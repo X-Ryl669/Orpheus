@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.ui;
+package org.opensilk.music.library.kutr.ui;
 
 import android.content.Context;
 import android.content.Intent;
 
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
-import org.opensilk.music.library.drive.Constants;
+import org.opensilk.music.library.kutr.Constants;
+import org.opensilk.music.library.kutr.client.KutrAccountCredential;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -35,32 +35,29 @@ import timber.log.Timber;
 /**
  * Created by drew on 10/20/15.
  */
-public class DriveAuthService {
+public class KutrAuthService {
 
-    public static final String SERVICE_NAME = DriveAuthService.class.getName();
+    public static final String SERVICE_NAME = KutrAuthService.class.getName();
 
-    final Context context;
-    final GoogleAccountCredential credential;
+    final KutrAccountCredential credential;
 
     private BehaviorSubject<String> tokenSubject;
 
-    public DriveAuthService(Context context) {
-        this.context = context;
-        this.credential = GoogleAccountCredential.usingOAuth2(context, Constants.SCOPES);
+    public KutrAuthService(Context context) {
+        this.credential = new KutrAccountCredential(context);//, Constants.SCOPES);
     }
 
     @SuppressWarnings("ResourceType")
-    public static DriveAuthService getService(Context context) {
-        return (DriveAuthService) context.getSystemService(SERVICE_NAME);
+    public static KutrAuthService getService(Context context) {
+        return (KutrAuthService) context.getSystemService(SERVICE_NAME);
     }
 
-    public Intent getAccountChooserIntent() {
-        return credential.newChooseAccountIntent();
-    }
+ //   public Intent getAccountChooserIntent() {
+ //       return credential.newChooseAccountIntent();
+ //   }
 
-    public Subscription getToken(String account, Subscriber<String> subscriber, boolean force) {
+    public Subscription getToken(final String account, final String password, final String host, Subscriber<String> subscriber, boolean force) {
         if (tokenSubject == null || force) {
-            credential.setSelectedAccountName(account);
             tokenSubject = BehaviorSubject.create();
             Observable.create(
                     new Observable.OnSubscribe<String>() {
@@ -68,7 +65,7 @@ public class DriveAuthService {
                         public void call(Subscriber<? super String> subscriber) {
                             try {
                                 Timber.d("Fetching token");
-                                String token = credential.getToken();
+                                String token = credential.fetchToken(account, password, host);
                                 Timber.d("Found token");
                                 subscriber.onNext(token);
                             } catch (Throwable e) {

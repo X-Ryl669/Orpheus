@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive;
+package org.opensilk.music.library.kutr;
 
 import android.content.Context;
 
@@ -30,9 +30,9 @@ import dagger.Provides;
  * Created by drew on 10/20/15.
  */
 @Module
-public class DriveAuthorityModule {
-    @Provides @Named("driveLibraryAuthority")
+public class KutrAuthorityModule {
+    @Provides @Named("kutrLibraryAuthority")
     public String provideMediaStoreLibraryAuthority(@ForApplication Context context) {
-        return context.getPackageName() + ".provider.driveLibrary";
+        return context.getPackageName() + ".provider.kutrLibrary";
     }
 }

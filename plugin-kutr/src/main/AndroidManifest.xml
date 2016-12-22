@@ -27,21 +27,37 @@
         android:description="@string/app_description"
         android:allowBackup="true">
 
-        <activity android:name="org.opensilk.music.library.kutr.ui.SetCredentialsActivity"
-            android:exported="true"
-            tools:remove="process"/>
-
         <activity android:name="org.opensilk.music.library.kutr.ui.SettingsActivity"
             android:exported="true"
             tools:remove="process"/>
 
-        <!--Google kutr provider-->
+        <activity android:name="org.opensilk.music.library.kutr.ui.LoginActivity"
+            android:exported="true"
+            tools:remove="process">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- kutr provider -->
         <provider android:name="org.opensilk.music.library.kutr.provider.KutrLibraryProvider"
             android:exported="true"
             android:permission="${libraryPermission}"
             android:authorities="${applicationId}.provider.kutrLibrary"
             tools:replace="authorities"
             tools:remove="process"/>
+
+
+
+        <service
+            android:name="org.opensilk.music.library.kutr.service.KutrService"
+            android:icon="@drawable/ic_kutr_grey600_36dp"
+            android:label="@string/app_name"
+            android:process="KutrService"
+            />
+
+
 
     </application>
 

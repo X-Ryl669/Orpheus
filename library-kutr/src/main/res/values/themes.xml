@@ -18,7 +18,7 @@
 
 <resources>
     <!-- Base theme for picker activity that just starts another activity -->
-    <style name="DriveThemeTranslucentDark" parent="Theme.AppCompat.NoActionBar">
+    <style name="KutrThemeTranslucentDark" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -27,10 +27,10 @@
              activity will be used. -->
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
-    <style name="DriveLightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="KutrLightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
     </style>
-    <style name="DriveDarkTheme" parent="Theme.AppCompat">
+    <style name="KutrDarkTheme" parent="Theme.AppCompat">
 
     </style>
 </resources>

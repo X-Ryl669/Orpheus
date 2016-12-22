@@ -29,13 +29,21 @@ import java.io.InputStream;
  * Created by drew on 12/25/15.
  */
 public class ArtInfoRequestStreamLoaderFactory implements ModelLoaderFactory<ArtInfoRequest, InputStream> {
+
+    private final Context context;
+
     @Override
-    public ModelLoader<ArtInfoRequest, InputStream> build(Context context, MultiModelLoaderFactory multiFactory) {
-        return new ArtInfoRequestStreamLoader(context);
+    public ModelLoader<ArtInfoRequest, InputStream> build(MultiModelLoaderFactory multiFactory) {
+        return new ArtInfoRequestStreamLoader(this.context);
     }
 
     @Override
     public void teardown() {
         //pass
+    }
+
+    public ArtInfoRequestStreamLoaderFactory(Context context)
+    {
+        this.context = context;
     }
 }

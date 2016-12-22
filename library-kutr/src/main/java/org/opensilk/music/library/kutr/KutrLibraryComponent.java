@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive;
+package org.opensilk.music.library.kutr;
 
 import android.content.Context;
 
@@ -36,14 +36,14 @@ import rx.functions.Func1;
 @Component(
         modules = {
                 AppContextModule.class,
-                DriveLibraryModule.class
+                KutrLibraryModule.class
         }
 )
-public interface DriveLibraryComponent extends OkHttpComponent, AppContextComponent, SystemServicesComponent {
-    Func1<Context, DriveLibraryComponent> FACTORY = new Func1<Context, DriveLibraryComponent>() {
+public interface KutrLibraryComponent extends OkHttpComponent, AppContextComponent, SystemServicesComponent {
+    Func1<Context, KutrLibraryComponent> FACTORY = new Func1<Context, KutrLibraryComponent>() {
         @Override
-        public DriveLibraryComponent call(Context context) {
-            return DaggerDriveLibraryComponent.builder()
+        public KutrLibraryComponent call(Context context) {
+            return DaggerKutrLibraryComponent.builder()
                     .appContextModule(new AppContextModule(context))
                     .build();
         }

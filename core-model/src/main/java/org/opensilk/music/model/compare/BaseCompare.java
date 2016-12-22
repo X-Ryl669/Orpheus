@@ -55,6 +55,7 @@ public class BaseCompare {
                     }
                 };
             default:
+                //noinspection ComparatorMethodParameterNotUsed
                 return new Comparator<T>() {
                     @Override
                     public int compare(T lhs, T rhs) {

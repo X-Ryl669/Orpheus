@@ -33,9 +33,9 @@ android {
     } else {
         println "No KeyStore directory found! (You can ignore this warning if your name is not drew)"
         defaultConfig.resValue "string", "cast_id", "CC1AD845" //CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID
-        defaultConfig.buildConfigField "String", "ACRA_REPORTING_URL", "null"
-        defaultConfig.buildConfigField "String", "ACRA_REPORTING_USR", "null"
-        defaultConfig.buildConfigField "String", "ACRA_REPORTING_PASS", "null"
+        defaultConfig.buildConfigField "String", "ACRA_REPORTING_URL", "null" // "\"\"" // null is not a constant expression, and fails the build
+        defaultConfig.buildConfigField "String", "ACRA_REPORTING_USR", "null" //"\"\"" // null is not a constant expression, and fails the build
+        defaultConfig.buildConfigField "String", "ACRA_REPORTING_PASS", "null" //"\"\"" // null is not a constant expression, and fails the build
     }
 
 }

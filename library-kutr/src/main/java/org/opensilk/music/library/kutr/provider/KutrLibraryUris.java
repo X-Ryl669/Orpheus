@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.provider;
+package org.opensilk.music.library.kutr.provider;
 
 import android.content.UriMatcher;
 import android.net.Uri;
@@ -23,7 +23,7 @@ import android.net.Uri;
 /**
  * Created by drew on 10/20/15.
  */
-public class DriveLibraryUris {
+public class KutrLibraryUris {
 
     static final String folder = "folder";
     static final String file = "file";

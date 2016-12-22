@@ -91,6 +91,7 @@ public class FoldersLibraryProvider extends LibraryProvider implements PlaylistL
     @Override
     public boolean onCreate() {
         final AppContextComponent acc = DaggerService.getDaggerComponent(getContext());
+
         mComponent = FoldersLibraryComponent.FACTORY.call(acc);
         mComponent.inject(this);
         super.onCreate();

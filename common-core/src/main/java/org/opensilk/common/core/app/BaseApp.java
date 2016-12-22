@@ -118,7 +118,7 @@ public abstract class BaseApp extends Application {
     }
 
     /**
-     * Stubs out v, d, and i logs, the optional Action1 allows sending execption to crash
+     * Stubs out v, d, and i logs, the optional Action1 allows sending exception to crash
      * reporter server or whatever.
      */
     private static final class ReleaseTree extends DebugTreeWithThreadName {

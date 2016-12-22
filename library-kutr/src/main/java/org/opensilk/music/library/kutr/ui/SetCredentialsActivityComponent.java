@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.ui;
+package org.opensilk.music.library.kutr.ui;
 
 import org.opensilk.common.core.dagger2.ActivityScope;
 import org.opensilk.common.core.dagger2.AppContextComponent;
-import org.opensilk.music.library.drive.DriveAuthorityModule;
+import org.opensilk.music.library.kutr.KutrAuthorityModule;
 
 import dagger.Component;
 import rx.functions.Func1;
@@ -30,17 +30,17 @@ import rx.functions.Func1;
 @ActivityScope
 @Component(
         dependencies = AppContextComponent.class,
-        modules = DriveAuthorityModule.class
+        modules = KutrAuthorityModule.class
 )
-public interface ChooserActivityComponent {
-    Func1<AppContextComponent, ChooserActivityComponent> FACTORY =
-            new Func1<AppContextComponent, ChooserActivityComponent>() {
+public interface SetCredentialsActivityComponent {
+    Func1<AppContextComponent, SetCredentialsActivityComponent> FACTORY =
+            new Func1<AppContextComponent, SetCredentialsActivityComponent>() {
                 @Override
-                public ChooserActivityComponent call(AppContextComponent appContextComponent) {
-                    return DaggerChooserActivityComponent.builder()
+                public SetCredentialsActivityComponent call(AppContextComponent appContextComponent) {
+                    return DaggerSetCredentialsActivityComponent.builder()
                             .appContextComponent(appContextComponent)
                             .build();
                 }
             };
-    void inject(ChooserActivity chooserActivity);
+    void inject(SetCredentialsActivity setCredentialsActivity);
 }

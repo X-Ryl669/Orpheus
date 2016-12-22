@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.provider;
+package org.opensilk.music.library.kutr.provider;
 
-import org.opensilk.music.library.drive.DriveLibraryComponent;
-import org.opensilk.music.library.drive.client.DriveClientComponent;
-import org.opensilk.music.library.drive.client.DriveClientModule;
+import org.opensilk.music.library.kutr.KutrLibraryComponent;
+import org.opensilk.music.library.kutr.client.KutrClientComponent;
+import org.opensilk.music.library.kutr.client.KutrClientModule;
 
 import dagger.Component;
 import rx.functions.Func2;
@@ -27,26 +27,26 @@ import rx.functions.Func2;
 /**
  * Created by drew on 10/20/15.
  */
-@DriveLibraryProviderScope
+@KutrLibraryProviderScope
 @Component(
         dependencies = {
-                DriveLibraryComponent.class,
+                KutrLibraryComponent.class,
         },
         modules = {
-                DriveLibraryProviderModule.class
+                KutrLibraryProviderModule.class
         }
 )
-public interface DriveLibraryProviderComponent {
-        Func2<DriveLibraryComponent, DriveLibraryProviderModule, DriveLibraryProviderComponent> FACTORY =
-                new Func2<DriveLibraryComponent, DriveLibraryProviderModule, DriveLibraryProviderComponent>() {
+public interface KutrLibraryProviderComponent {
+        Func2<KutrLibraryComponent, KutrLibraryProviderModule, KutrLibraryProviderComponent> FACTORY =
+                new Func2<KutrLibraryComponent, KutrLibraryProviderModule, KutrLibraryProviderComponent>() {
                         @Override
-                        public DriveLibraryProviderComponent call(DriveLibraryComponent driveComponent, DriveLibraryProviderModule driveLibraryModule) {
-                                return DaggerDriveLibraryProviderComponent.builder()
-                                        .driveLibraryComponent(driveComponent)
-                                        .driveLibraryProviderModule(driveLibraryModule)
+                        public KutrLibraryProviderComponent call(KutrLibraryComponent kutrComponent, KutrLibraryProviderModule kutrLibraryModule) {
+                                return DaggerKutrLibraryProviderComponent.builder()
+                                        .kutrLibraryComponent(kutrComponent)
+                                        .kutrLibraryProviderModule(kutrLibraryModule)
                                         .build();
                         }
                 };
-        void inject(DriveLibraryProvider provider);
-        DriveClientComponent driveClientComponent(DriveClientModule module);
+        void inject(KutrLibraryProvider provider);
+        KutrClientComponent kutrClientComponent(KutrClientModule module);
 }

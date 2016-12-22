@@ -18,6 +18,10 @@
 package org.opensilk.music;
 
 import android.content.ComponentCallbacks2;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ProviderInfo;
+import android.util.Log;
 
 import org.acra.ACRA;
 import org.acra.ACRAConfiguration;
@@ -40,6 +44,7 @@ import timber.log.Timber;
 
 import static org.acra.ReportField.*;
 
+/*
 @ReportsCrashes(
         formUri = BuildConfig.ACRA_REPORTING_URL,
         formUriBasicAuthLogin = BuildConfig.ACRA_REPORTING_USR,
@@ -77,6 +82,7 @@ import static org.acra.ReportField.*;
                 LOGCAT,
         }
 )
+*/
 public class App extends BaseApp {
     private static final boolean ENABLE_LOGGING = BuildConfig.LOGV;
 
@@ -84,7 +90,7 @@ public class App extends BaseApp {
     public void onCreate() {
         super.onCreate();
         setupTimber(ENABLE_LOGGING, null);
-        initAcra();
+       // initAcra();
         registerComponentCallbacks(mComponentCallbacks);
         enableStrictMode();
     }

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.ui;
+package org.opensilk.music.library.kutr.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,7 +29,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 
 import org.opensilk.music.library.LibraryConstants;
-import org.opensilk.music.library.drive.R;
+import org.opensilk.music.library.kutr.R;
 
 /**
  * Created by drew on 11/15/15.
@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         boolean light = getIntent().getBooleanExtra(LibraryConstants.EXTRA_WANT_LIGHT_THEME, true);
-        setTheme(light ? R.style.DriveLightTheme : R.style.DriveDarkTheme);
+        setTheme(light ? R.style.KutrLightTheme : R.style.KutrDarkTheme);
         super.onCreate(savedInstanceState);
         FrameLayout main = new FrameLayout(this);
         main.setId(R.id.main);
@@ -82,7 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
             final WebView webView = new WebView(getActivity());
             webView.loadUrl("file:///android_asset/licenses.html");
             return new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.drive_open_source_licenses)
+                    .setTitle(R.string.kutr_open_source_licenses)
                     .setView(webView)
                     .setPositiveButton(android.R.string.ok, null)
                     .create();

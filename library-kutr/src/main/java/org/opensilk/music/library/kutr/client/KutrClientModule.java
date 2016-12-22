@@ -15,14 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.client;
+package org.opensilk.music.library.kutr.client;
 
 import android.content.Context;
 
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import org.opensilk.common.core.dagger2.ForApplication;
-import org.opensilk.music.library.drive.Constants;
+import org.opensilk.music.library.kutr.Constants;
 
 import dagger.Module;
 import dagger.Provides;
@@ -31,16 +30,16 @@ import dagger.Provides;
  * Created by drew on 10/20/15.
  */
 @Module
-public class DriveClientModule {
+public class KutrClientModule {
     final String accountName;
+    final String password;
 
-    public DriveClientModule(String accountName) {
-        this.accountName = accountName;
+    public KutrClientModule(String accountName, String password) {
+        this.accountName = accountName; this.password = password;
     }
 
-    @Provides @DriveClientScope
-    public GoogleAccountCredential provideCredential(@ForApplication Context context) {
-        return GoogleAccountCredential.usingOAuth2(context, Constants.SCOPES)
-                .setSelectedAccountName(accountName);
+    @Provides @KutrClientScope
+    public KutrAccountCredential provideCredential(@ForApplication Context context) {
+        return new KutrAccountCredential(accountName, password, context);
     }
 }

@@ -22,10 +22,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+//import com.google.android.gms.auth.UserRecoverableAuthException;
+//import com.google.android.gms.common.ConnectionResult;
+//import com.google.android.gms.common.GoogleApiAvailability;
+//import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 
 import org.opensilk.common.core.dagger2.AppContextComponent;
 import org.opensilk.common.core.mortar.DaggerService;
@@ -47,7 +47,7 @@ import rx.Subscription;
 import timber.log.Timber;
 
 /**
- * Created by drew on 6/15/14.
+ * Created by X-Ryl669 now.
  */
 public class SetCredentialsActivity extends MortarActivity {
 
@@ -57,13 +57,15 @@ public class SetCredentialsActivity extends MortarActivity {
     @Inject @Named("kutrLibraryAuthority") String mAuthority;
 
     private String mAccountName;
+    private String mPassword;
+    private String mHost;
     KutrAuthService mAuthService;
     Subscription authSubscription;
 
     @Override
     protected void onCreateScope(MortarScope.Builder builder) {
         AppContextComponent parent = DaggerService.getDaggerComponent(getApplicationContext());
-        ChooserActivityComponent cmp = ChooserActivityComponent.FACTORY.call(parent);
+        SetCredentialsActivityComponent cmp = SetCredentialsActivityComponent.FACTORY.call(parent);
         builder.withService(DaggerService.DAGGER_SERVICE, cmp)
                 .withService(KutrAuthService.SERVICE_NAME, new KutrAuthService(getApplicationContext()));
     }
@@ -72,28 +74,23 @@ public class SetCredentialsActivity extends MortarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ChooserActivityComponent cmp = DaggerService.getDaggerComponent(this);
+        SetCredentialsActivityComponent cmp = DaggerService.getDaggerComponent(this);
         cmp.inject(this);
 
         setResult(RESULT_CANCELED);
 
         int error;
-        if (ConnectionResult.SUCCESS !=
-                (error = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this))) {
-            if (!GoogleApiAvailability.getInstance().isUserResolvableError(error)) {
-                finishFailure();
-            }
-        } else {
-            mAuthService = KutrAuthService.getService(this);
+        mAuthService = KutrAuthService.getService(this);
 
-            if (savedInstanceState == null) {
-                Intent i = mAuthService.getAccountChooserIntent();
-                startActivityForResult(i, REQUEST_ACCOUNT_PICKER);
-            } else {
-                mAccountName = savedInstanceState.getString("account");
-                if (mAuthService.isFetchingToken()) {
-                    authSubscription = mAuthService.getToken(mAccountName, new TokenSubscriber(), false);
-                }
+        if (savedInstanceState == null) {
+//                Intent i = mAuthService.getAccountChooserIntent();
+//                startActivityForResult(i, REQUEST_ACCOUNT_PICKER);
+        } else {
+            mAccountName = savedInstanceState.getString("account");
+            mPassword = savedInstanceState.getString("password");
+            mHost = savedInstanceState.getString("host");
+            if (mAuthService.isFetchingToken()) {
+                authSubscription = mAuthService.getToken(mAccountName, mPassword, mHost, new TokenSubscriber(), false);
             }
         }
     }
@@ -102,6 +99,8 @@ public class SetCredentialsActivity extends MortarActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("account", mAccountName);
+        outState.putString("password", mPassword);
+        outState.putString("host", mHost);
     }
 
     @Override
@@ -158,7 +157,7 @@ public class SetCredentialsActivity extends MortarActivity {
 
     private void fetchToken() {
         ProgressFragment.newInstance().show(getFragmentManager(), ProgressFragment.TAG);
-        authSubscription = mAuthService.getToken(mAccountName, new TokenSubscriber(), true);
+        authSubscription = mAuthService.getToken(mAccountName, mPassword, mHost, new TokenSubscriber(), true);
     }
 
     class TokenSubscriber extends Subscriber<String> {
@@ -170,11 +169,13 @@ public class SetCredentialsActivity extends MortarActivity {
         @Override
         public void onError(Throwable e) {
             Timber.e(e, "Error fetching token");
+            //TODO
+            /*
             if (e instanceof UserRecoverableAuthIOException) {
                 startActivityForResult(((UserRecoverableAuthIOException) e).getIntent(), REQUEST_AUTH_APPROVAL);
             } else if (e instanceof UserRecoverableAuthException) {
                 startActivityForResult(((UserRecoverableAuthException) e).getIntent(), REQUEST_AUTH_APPROVAL);
-            } else {
+            } else */{
                 finishFailure();
             }
         }

@@ -15,26 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.client;
+package org.opensilk.music.library.kutr.client;
 
 import android.net.Uri;
 
+/*
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAuthIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+*/
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.File;
-import com.google.api.services.drive.model.FileList;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.RecursiveToStringStyle;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.opensilk.common.core.util.BundleHelper;
-import org.opensilk.music.library.drive.provider.DriveLibraryProvider;
-import org.opensilk.music.library.drive.provider.DriveLibraryUris;
+import org.opensilk.music.library.kutr.provider.KutrLibraryProvider;
+import org.opensilk.music.library.kutr.provider.KutrLibraryUris;
 import org.opensilk.music.library.internal.LibraryException;
 import org.opensilk.music.library.provider.LibraryUris;
 import org.opensilk.music.model.Folder;
@@ -57,14 +56,14 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 import timber.log.Timber;
 
-import static org.opensilk.music.library.drive.Constants.BASE_QUERY;
-import static org.opensilk.music.library.drive.Constants.LIST_FIELDS;
-import static org.opensilk.music.library.drive.client.ModelUtil.IS_AUDIO;
-import static org.opensilk.music.library.drive.client.ModelUtil.IS_FOLDER;
-import static org.opensilk.music.library.drive.client.ModelUtil.IS_IMAGE;
-import static org.opensilk.music.library.drive.client.ModelUtil.buildDownloadUri;
-import static org.opensilk.music.library.drive.client.ModelUtil.formatDate;
-import static org.opensilk.music.library.drive.client.ModelUtil.pickSuitableImage;
+//import static org.opensilk.music.library.kutr.Constants.BASE_QUERY;
+//import static org.opensilk.music.library.kutr.Constants.LIST_FIELDS;
+import static org.opensilk.music.library.kutr.client.ModelUtil.IS_AUDIO;
+import static org.opensilk.music.library.kutr.client.ModelUtil.IS_FOLDER;
+import static org.opensilk.music.library.kutr.client.ModelUtil.IS_IMAGE;
+import static org.opensilk.music.library.kutr.client.ModelUtil.buildDownloadUri;
+import static org.opensilk.music.library.kutr.client.ModelUtil.formatDate;
+import static org.opensilk.music.library.kutr.client.ModelUtil.pickSuitableImage;
 import static org.opensilk.music.library.internal.LibraryException.Kind.AUTH_FAILURE;
 import static org.opensilk.music.library.internal.LibraryException.Kind.NETWORK;
 import static org.opensilk.music.library.internal.LibraryException.Kind.UNKNOWN;
@@ -72,29 +71,33 @@ import static org.opensilk.music.library.internal.LibraryException.Kind.UNKNOWN;
 /**
  * Created by drew on 10/20/15.
  */
-@DriveClientScope
-public class DriveClient {
-    final Drive mDrive;
-    final GoogleAccountCredential mCredential;
+@KutrClientScope
+public class KutrClient {
+//    final Kutr mKutr;
+    final KutrAccountCredential mCredential;
     final String mAuthority;
     final String mAccount;
 
     @Inject
-    public DriveClient(
+    public KutrClient(
             HttpTransport httpTransport,
             JsonFactory jsonFactory,
-            GoogleAccountCredential credential,
+            KutrAccountCredential credential,
             @Named("AppIdentifier") String appIdentifier,
-            @Named("driveLibraryAuthority") String authority
+            @Named("kutrLibraryAuthority") String authority
     ) {
-        mDrive = new Drive.Builder(httpTransport, jsonFactory, credential)
+        /*
+        mKutr = new Kutr.Builder(httpTransport, jsonFactory, credential)
                 .setApplicationName(appIdentifier).build();
+        */
         mCredential = credential;
         mAuthority = authority;
         mAccount = credential.getSelectedAccountName();
     }
 
     public Observable<Model> listFolder(final String identity) {
+        return null; //TODO
+        /*
         final String q = "'" + identity + "'" + BASE_QUERY;
         return getFiles(q)
                 .collect(collectorFactory, collectAction)
@@ -120,17 +123,18 @@ public class DriveClient {
                         return Observable.from(models);
                     }
                 });
+         */
     }
 
     public Observable<Model> getFolder(final String identity) {
         return Observable.create(new Observable.OnSubscribe<Model>() {
             @Override
             public void call(Subscriber<? super Model> subscriber) {
-                try {
-                    File file = mDrive.files().get(identity).execute();
-                    if (file != null && !subscriber.isUnsubscribed()) {
-                        if (IS_FOLDER.call(file)) {
-                            subscriber.onNext(buildFolder(null, file));
+//                try {
+                    Item item = null; // mKutr.files().get(identity).execute();
+                    if (item != null && !subscriber.isUnsubscribed()) {
+                        if (IS_FOLDER.call(item)) {
+                            subscriber.onNext(buildFolder(null, item));
                             subscriber.onCompleted();
                         } else {
                             subscriber.onError(new IllegalArgumentException("Unknown file " + identity));
@@ -138,9 +142,9 @@ public class DriveClient {
                     } else if (!subscriber.isUnsubscribed()) {
                         subscriber.onError(new IllegalArgumentException("Unknown file " + identity));
                     }
-                } catch (IOException e) {
-                    handleException(e, subscriber);
-                }
+//                } catch (IOException e) {
+//                    handleException(e, subscriber);
+//                }
             }
         });
     }
@@ -153,13 +157,15 @@ public class DriveClient {
                     @Override
                     public Boolean call(Model model) {
                         return (model instanceof Track)
-                                && StringUtils.equals(DriveLibraryUris.extractFileId(model.getUri()), identity);
+                                && StringUtils.equals(KutrLibraryUris.extractFileId(model.getUri()), identity);
                     }
                 });
     }
 
     @DebugLog
-    Observable<List<File>> getFiles(final String query) {
+    Observable<List<Item>> getFiles(final String query) {
+        return null;
+        /*
         return Observable.create(new Observable.OnSubscribe<List<File>>() {
             @Override
             public void call(Subscriber<? super List<File>> subscriber) {
@@ -170,7 +176,7 @@ public class DriveClient {
                         if (subscriber.isUnsubscribed()) {
                             return; //Shortcircuit if nobody listening
                         }
-                        Drive.Files.List req = mDrive.files().list()
+                        Kutr.Files.List req = mKutr.files().list()
                                 .setQ(query)
                                 .setFields(LIST_FIELDS);
                         if (!StringUtils.isEmpty(paginationToken)) {
@@ -195,59 +201,55 @@ public class DriveClient {
                 }
             }
         });
+        */
     }
 
-    Folder buildFolder(String parentFolder, File f) {
-        final String id = f.getId();
-        final Uri uri = DriveLibraryUris.folder(mAuthority, mAccount, id);
-        final Uri parentUri = DriveLibraryUris.folder(mAuthority, mAccount, parentFolder);
-        final String title = f.getTitle();
-        final String date = formatDate(f.getModifiedDate().getValue());
+    Folder buildFolder(String parentFolder, Item i) {
+        final String id = i.getId();
+        final Uri uri = KutrLibraryUris.folder(mAuthority, mAccount, id);
+        final Uri parentUri = KutrLibraryUris.folder(mAuthority, mAccount, parentFolder);
+        final String title = i.getName();
         return Folder.builder()
                 .setUri(uri)
                 .setParentUri(parentUri)
                 .setName(title)
-                .setDateModified(date)
                 .build();
     }
 
-    Track buildTrack(String parentFolder, String authToken, Uri artworkUri, File f) {
-        final String id = f.getId();
-        final Uri uri = DriveLibraryUris.file(mAuthority, mAccount, parentFolder, id);
-        final Uri parentUri = DriveLibraryUris.folder(mAuthority, mAccount, parentFolder);
-        final String title = f.getTitle();
+    Track buildTrack(String parentFolder, String authToken, Uri artworkUri, Item i) {
+        final String id = i.getId();
+        final Uri uri = KutrLibraryUris.file(mAuthority, mAccount, parentFolder, id);
+        final Uri parentUri = KutrLibraryUris.folder(mAuthority, mAccount, parentFolder);
+        final String title = i.getName();
         final Track.Builder bob = Track.builder()
                 .setUri(uri)
                 .setParentUri(parentUri)
                 .setName(title)
                 .setArtworkUri(artworkUri)//Null ok
                 ;
-        final Uri data = Uri.parse(f.getDownloadUrl());// buildDownloadUri(f.getDownloadUrl(), authToken);
-        final long lastMod = f.getModifiedDate().getValue();
-        final long size = f.getFileSize();
-        final String mimeType = f.getMimeType();
+        final Uri data = Uri.parse(i.getDownloadUrl());// buildDownloadUri(f.getDownloadUrl(), authToken);
+    //    final long size = i.getFileSize();
+        final String mimeType = i.getMimeType();
         final Track.Res res = Track.Res.builder()
                 .setUri(data)
                 .addHeader("Authorization", "Bearer " + authToken)
-                .setLastMod(lastMod)
-                .setSize(size)
+  //              .setLastMod(lastMod)
+  //              .setSize(size)
                 .setMimeType(mimeType)
                 .build();
         return bob.addRes(res).build();
     }
 
     void removeAccount() {
-        mCredential.getContext().getContentResolver().call(LibraryUris.call(mAuthority),
-                DriveLibraryProvider.INVALIDATE_ACCOUNT, null, BundleHelper.b().putString(mAccount).get());
+//        mCredential.getContext().getContentResolver().call(LibraryUris.call(mAuthority),
+//                KutrLibraryProvider.INVALIDATE_ACCOUNT, null, BundleHelper.b().putString(mAccount).get());
+        //TODO
     }
 
     void handleException(Throwable e, Subscriber<?> subscriber) {
         Timber.e(e, "handleException");
         LibraryException ex = null;
-        if (e instanceof UserRecoverableAuthIOException) {
-            ex = new LibraryException(AUTH_FAILURE, e);
-        } else if (e instanceof GoogleAuthIOException) {
-            removeAccount();
+        if (e instanceof KutrAuthException) {
             ex = new LibraryException(AUTH_FAILURE, e);
         } else if (e instanceof IOException) {
             ex = new LibraryException(NETWORK, e);
@@ -265,7 +267,7 @@ public class DriveClient {
             try {
                 String token = mCredential.getToken();
                 return new Collector(token);
-            } catch (GoogleAuthException e) {
+            } catch (KutrAuthException e) {
                 removeAccount();
                 throw Exceptions.propagate(new LibraryException(LibraryException.Kind.AUTH_FAILURE, e));
             } catch (IOException e) {
@@ -274,12 +276,12 @@ public class DriveClient {
         }
     };
 
-    final Action2<Collector, List<File>> collectAction = new Action2<Collector, List<File>>() {
+    final Action2<Collector, List<Item>> collectAction = new Action2<Collector, List<Item>>() {
         @Override
-        public void call(Collector collector, List<File> files) {
-            for (File file : files) {
+        public void call(Collector collector, List<Item> items) {
+            for (Item file : items) {
                 if (IS_AUDIO.call(file)) {
-                    collector.files.add(file);
+                    collector.songs.add(file);
                 } else if (IS_FOLDER.call(file)) {
                     collector.folders.add(file);
                 } else if (IS_IMAGE.call(file)) {
@@ -290,9 +292,9 @@ public class DriveClient {
     };
 
     static class Collector {
-        final ArrayList<File> images = new ArrayList<>();
-        final ArrayList<File> folders = new ArrayList<>();
-        final ArrayList<File> files = new ArrayList<>();
+        final ArrayList<Item> images = new ArrayList<>();
+        final ArrayList<Item> folders = new ArrayList<>();
+        final ArrayList<Item> songs = new ArrayList<>();
         final String token;
         public Collector(String token) {
             this.token = token;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.provider;
+package org.opensilk.music.library.kutr.provider;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -27,8 +27,8 @@ import com.google.api.client.json.JsonFactory;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.opensilk.common.core.dagger2.ForApplication;
-import org.opensilk.music.library.drive.DriveAuthorityModule;
-import org.opensilk.music.library.drive.transport.OkHttpTransport;
+import org.opensilk.music.library.kutr.KutrAuthorityModule;
+import org.opensilk.music.library.kutr.transport.OkHttpTransport;
 
 import javax.inject.Named;
 
@@ -39,21 +39,21 @@ import dagger.Provides;
  * Created by drew on 10/20/15.
  */
 @Module(
-        includes = DriveAuthorityModule.class
+        includes = KutrAuthorityModule.class
 )
-public class DriveLibraryProviderModule {
+public class KutrLibraryProviderModule {
 
-    @Provides @DriveLibraryProviderScope
+    @Provides @KutrLibraryProviderScope
     public HttpTransport provideHttpTransport(OkHttpClient okHttpClient) {
         return new OkHttpTransport(okHttpClient);
     }
 
-    @Provides @DriveLibraryProviderScope
+    @Provides @KutrLibraryProviderScope
     public JsonFactory provideJsonFactory() {
         return AndroidJsonFactory.getDefaultInstance();
     }
 
-    @Provides @DriveLibraryProviderScope
+    @Provides @KutrLibraryProviderScope
     @Named("AppIdentifier")
     public String provideAppIdentifier(@ForApplication Context context) {
         try {

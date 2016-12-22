@@ -61,6 +61,6 @@ public class ArtworkGlideModule implements com.bumptech.glide.module.GlideModule
 
     @Override
     public void registerComponents(Context context, Registry registry) {
-        registry.append(ArtInfoRequest.class, InputStream.class, new ArtInfoRequestStreamLoaderFactory());
+        registry.append(ArtInfoRequest.class, InputStream.class, new ArtInfoRequestStreamLoaderFactory(context));
     }
 }

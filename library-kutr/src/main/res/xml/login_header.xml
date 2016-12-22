@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <header
+            android:fragment="org.opensilk.music.library.kutr.ui.LoginActivity$LoginFragment"
+            android:icon="@drawable/ic_kutr_grey600_36dp"
+            android:title="@string/kutr_credentials" />
+
+        <header
+            android:fragment="org.opensilk.music.library.kutr.ui.LoginActivity$CacheFragment"
+            android:icon="@drawable/ic_kutr_grey600_36dp"
+            android:title="@string/kutr_cache" />
+
+</preference-headers>

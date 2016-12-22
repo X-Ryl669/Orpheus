@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.provider;
+package org.opensilk.music.library.kutr.provider;
 
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -23,7 +23,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -31,12 +30,13 @@ import org.opensilk.common.core.mortar.DaggerService;
 import org.opensilk.common.core.util.BundleHelper;
 import org.opensilk.common.core.util.ConnectionUtils;
 import org.opensilk.music.library.LibraryConfig;
-import org.opensilk.music.library.drive.DriveLibraryComponent;
-import org.opensilk.music.library.drive.R;
-import org.opensilk.music.library.drive.client.DriveClient;
-import org.opensilk.music.library.drive.client.DriveClientModule;
-import org.opensilk.music.library.drive.ui.ChooserActivity;
-import org.opensilk.music.library.drive.ui.SettingsActivity;
+import org.opensilk.music.library.kutr.KutrLibraryComponent;
+import org.opensilk.music.library.kutr.R;
+import org.opensilk.music.library.kutr.client.KutrClient;
+import org.opensilk.music.library.kutr.client.KutrClientModule;
+//import org.opensilk.music.library.kutr.ui.SetCredentialsActivity;
+import org.opensilk.music.library.kutr.ui.LoginActivity;
+import org.opensilk.music.library.kutr.ui.SettingsActivity;
 import org.opensilk.music.library.internal.LibraryException;
 import org.opensilk.music.library.provider.LibraryExtras;
 import org.opensilk.music.library.provider.LibraryProvider;
@@ -54,36 +54,36 @@ import javax.inject.Named;
 import rx.Observable;
 import rx.Subscriber;
 
-import static org.opensilk.music.library.drive.Constants.DEFAULT_ROOT_FOLDER;
-import static org.opensilk.music.library.drive.provider.DriveLibraryDB.SCHEMA.ACCOUNT;
-import static org.opensilk.music.library.drive.provider.DriveLibraryUris.M_FILE;
-import static org.opensilk.music.library.drive.provider.DriveLibraryUris.M_FOLDER;
-import static org.opensilk.music.library.drive.provider.DriveLibraryUris.M_ROOT_FOLDER;
-import static org.opensilk.music.library.drive.provider.DriveLibraryUris.extractAccount;
-import static org.opensilk.music.library.drive.provider.DriveLibraryUris.extractFileId;
-import static org.opensilk.music.library.drive.provider.DriveLibraryUris.extractFolderId;
+import static org.opensilk.music.library.kutr.Constants.DEFAULT_ROOT_FOLDER;
+import static org.opensilk.music.library.kutr.provider.KutrLibraryDB.SCHEMA.ACCOUNT;
+import static org.opensilk.music.library.kutr.provider.KutrLibraryUris.M_FILE;
+import static org.opensilk.music.library.kutr.provider.KutrLibraryUris.M_FOLDER;
+import static org.opensilk.music.library.kutr.provider.KutrLibraryUris.M_ROOT_FOLDER;
+import static org.opensilk.music.library.kutr.provider.KutrLibraryUris.extractAccount;
+import static org.opensilk.music.library.kutr.provider.KutrLibraryUris.extractFileId;
+import static org.opensilk.music.library.kutr.provider.KutrLibraryUris.extractFolderId;
 
 /**
  * Created by drew on 4/28/15.
  */
-public class DriveLibraryProvider extends LibraryProvider {
+public class KutrLibraryProvider extends LibraryProvider {
 
-    public static final String INSERT_ACCOUNT = "drive_insert_account";
-    public static final String INVALIDATE_ACCOUNT = "drive_invalidate_account";
+    public static final String INSERT_ACCOUNT = "kutr_insert_account";
+    public static final String INVALIDATE_ACCOUNT = "kutr_invalidate_account";
 
-    @Inject @Named("driveLibraryAuthority") String mAuthority;
-    @Inject DriveLibraryDB mDB;
+    @Inject @Named("kutrLibraryAuthority") String mAuthority;
+    @Inject KutrLibraryDB mDB;
     @Inject ConnectivityManager mConnectivityManager;
 
-    DriveLibraryProviderComponent mComponent;
+    KutrLibraryProviderComponent mComponent;
     UriMatcher mUriMatcher;
 
     @Override
     public boolean onCreate() {
-        DriveLibraryComponent parent = DaggerService.getDaggerComponent(getContext());
-        mComponent = DriveLibraryProviderComponent.FACTORY.call(parent, new DriveLibraryProviderModule());
+        KutrLibraryComponent parent = DaggerService.getDaggerComponent(getContext());
+        mComponent = KutrLibraryProviderComponent.FACTORY.call(parent, new KutrLibraryProviderModule());
         mComponent.inject(this);
-        mUriMatcher = DriveLibraryUris.matcher(mAuthority);
+        mUriMatcher = KutrLibraryUris.matcher(mAuthority);
         return super.onCreate();
     }
 
@@ -92,9 +92,9 @@ public class DriveLibraryProvider extends LibraryProvider {
         //noinspection ConstantConditions
         return LibraryConfig.builder()
                 .setAuthority(mAuthority)
-                .setLabel(getContext().getString(R.string.drive_name))
+                .setLabel(getContext().getString(R.string.kutr_name))
                 .setFlag(LibraryConfig.FLAG_REQUIRES_AUTH)
-                .setLoginComponent(new ComponentName(getContext(), ChooserActivity.class))
+                .setLoginComponent(new ComponentName(getContext(), LoginActivity.class))
                 .setSettingsComponent(new ComponentName(getContext(), SettingsActivity.class))
                 .build();
     }
@@ -111,8 +111,8 @@ public class DriveLibraryProvider extends LibraryProvider {
 
     @Override
     protected Observable<Model> getListObjsObservable(Uri uri, Bundle args) {
-        final DriveClient client = mComponent.driveClientComponent(
-                new DriveClientModule(extractAccount(uri))).client();
+        final KutrClient client = mComponent.kutrClientComponent(
+                new KutrClientModule(extractAccount(uri), "password")).client();
         switch (mUriMatcher.match(uri)) {
             case M_ROOT_FOLDER: {
                 return client.listFolder(DEFAULT_ROOT_FOLDER);
@@ -127,8 +127,8 @@ public class DriveLibraryProvider extends LibraryProvider {
 
     @Override
     protected Observable<Model> getGetObjObservable(Uri uri, Bundle args) {
-        final DriveClient client = mComponent.driveClientComponent(
-                new DriveClientModule(extractAccount(uri))).client();
+        final KutrClient client = mComponent.kutrClientComponent(
+                new KutrClientModule(extractAccount(uri), "password")).client();
         switch (mUriMatcher.match(uri)) {
             case M_FOLDER: {
                 return client.getFolder(extractFolderId(uri));
@@ -205,7 +205,7 @@ public class DriveLibraryProvider extends LibraryProvider {
             if (c != null && c.moveToFirst()) {
                 do {
                     accounts.add(Folder.builder()
-                            .setUri(DriveLibraryUris.rootFolder(mAuthority, c.getString(0)))
+                            .setUri(KutrLibraryUris.rootFolder(mAuthority, c.getString(0)))
                             .setParentUri(LibraryUris.rootUri(mAuthority))
                             .setName(c.getString(0))
                             .build());

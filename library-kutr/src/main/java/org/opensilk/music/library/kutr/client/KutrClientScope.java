@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive.client;
+package org.opensilk.music.library.kutr.client;
 
 import javax.inject.Scope;
 
@@ -23,5 +23,5 @@ import javax.inject.Scope;
  * Created by drew on 10/20/15.
  */
 @Scope
-public @interface DriveClientScope {
+public @interface KutrClientScope {
 }

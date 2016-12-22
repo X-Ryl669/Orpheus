@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.opensilk.music.library.drive;
+package org.opensilk.music.library.kutr;
 
 import org.opensilk.common.core.dagger2.SystemServicesModule;
 import org.opensilk.music.okhttp.OkHttpModule;
@@ -31,5 +31,5 @@ import dagger.Module;
                 SystemServicesModule.class
         }
 )
-public class DriveLibraryModule {
+public class KutrLibraryModule {
 }
